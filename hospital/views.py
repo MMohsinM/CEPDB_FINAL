@@ -699,8 +699,14 @@ def create_medicine(request, hos_id):
         if medicine_form.is_valid():
             casefile = medicine_form.save(commit=False)
             casefile.hos_ID_id = request.user.employee.hos_id
-            casefile.save()
-            messages.add_message(request, messages.SUCCESS, "Medicine Created")
+            qs = BalanceMedicine.objects.filter(hos_ID_id = request.user.employee.hos_id,
+                                                med=casefile.med)
+            qs.exclude(pk = casefile.pk)
+            if qs.exists():
+                messages.add_message(request, messages.WARNING, "Medicine Already Exists")
+            else:
+                casefile.save()
+                messages.add_message(request, messages.SUCCESS, "Medicine Created")
         # Patient Create Form
             return redirect("/hospital/"+str(hos_id)+"/list-medicine/")
         else:
