@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block PageContent %}
+<div class="container-fluid">
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Medicine List</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Medicine Name</th>
+                            <th>Satl</th>
+                            <th>Company</th>
+                            <th>Quantity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+        {% for medicine in medicines %}
+            <tr>   
+                <td><a href='/hospital/{{hos_id}}/info-medicine/{{medicine.med_ID}}/'</a>
+                    {{medicine.med_name}}</td> 
+		<td>{{medicine.med_salt}}</td> 
+		<td>{{medicine.med_company}}</td>        
+        <td>{{medicine.balance}}</td>
+            </tr>
+        
+        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock PageContent %}
+    
+
+{% block EndScripts %}
+<script defer="defer" src="{% static 'vendor/datatables/jquery.dataTables.min.js' %} "></script>
+<script defer="defer" src="{% static 'vendor/datatables/dataTables.bootstrap4.min.js'%} "></script>
+<script defer="defer" src="{% static 'js/demo/datatables-demo.js' %} "></script>
+{% endblock EndScripts %}
+    

@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+
+{% block PageContent %}
+    <h2 class='text-responsive h5'>Patient Info</h2>
+    <div>Name: {{casefile.first_name}} {{casefile.last_name}}</div>
+    <div>Age: {{casefile.age}}</div>
+    <div>Addr: {{casefile.addr}}</div>
+    <div>Status: {{casefile.get_status_display}}</div>
+    <div>Last Visit: {{casefile.last_visit}}</div>
+    <div>Disease: {{casefile.dis}}</div>
+    <div>Symptoms: {{casefile.diagnosis}}</div>
+    <div>History: {{casefile.history}}</div>
+    <div>Treatment: {{casefile.treatment}}</div>
+    {% if request.user.id == casefile.doc_id %}
+    <a data-toggle="modal" data-target="#DeleteModal" 
+    href='#'>Delete</a> /
+    <a href='/hospital/edit-casefile/{{casefile.id}}'>Edit</a> / 
+    <a href='/hospital/issue_medicine/{{casefile.id}}'>Issue Medicine</a>
+    {% endif %}
+
+    {% if issued_meds %}
+    <hr>
+    <div><h5 class='text-responsive h5'>Issued Medicines</h5>
+        <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Medicine Name</th>
+                            <th>Quantity</th>
+                            <th>Date Issued</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+        {% for meds in issued_meds %}
+            <tr>
+                <td>{{meds.med}}</td>
+                <td>{{meds.quant}}</td>
+                <td>{{meds.date_issued}} <a href='/hospital/edit_issue_medicine/{{meds.id}}'>EDIT</a> / 
+                    <a href='/hospital/delete_issue_medicine/{{meds.id}}'>DELETE</a></td>
+                
+            </tr>
+        {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    </div>
+    {% endif %}
+
+<div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Delete?</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">Are you Sure you want to delete</div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-primary" href="/hospital/delete-casefile/{{casefile.id}}">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>       
+
+{% endblock PageContent %}
+    

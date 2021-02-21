@@ -1,0 +1,65 @@
+ {% extends 'base.html' %}
+{% load static %}
+
+
+{% block PageContent %}
+<div class="container-fluid">
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">CaseFile List</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Disease</th>
+                            {% if request.user.is_super %}
+                            <th>Hospital</th>    
+                            {% endif %}                           
+                            <th>Doctor Name</th>    
+                            <th>Action</th>                        
+                        </tr>
+                    </thead>
+                    <tbody>
+        {% for disease in diseases %}
+            <tr>
+                <td>{{disease.dis_name}} {{disease.dis_cat}}</td>
+                
+                {% if request.user.is_super %}
+                <td>{{disease.hos_loc}} {{disease.hos_name}}</td>
+                {% endif %}
+                <td>{{disease.first_name}} {{disease.last_name}}</td>
+                
+                {% if request.user.userprofile.user_type == 3 %}
+                <td>
+                    <a href='/hospital/{{request.user.employee.hos_id}}/disease-action-director/accept/{{disease.id}}/'>Accept</a> / 
+                    <a href='/hospital/{{request.user.employee.hos_id}}/disease-action-director/reject/{{disease.id}}/'>Reject</a></td>    
+                {% endif %}
+                {% if request.user.is_superuser %}
+                <td>
+                    <a href='/disease-action-admin/accept/{{disease.id}}/'>Accept</a> / 
+                    <a href='/disease-action-admin/reject/{{disease.id}}/'>Reject</a></td>    
+                {% endif %}
+                    
+                
+            </tr>
+        
+        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock PageContent %}
+    
+
+{% block EndScripts %}
+<script defer="defer" src="{% static 'vendor/datatables/jquery.dataTables.min.js' %} "></script>
+<script defer="defer" src="{% static 'vendor/datatables/dataTables.bootstrap4.min.js'%} "></script>
+<script defer="defer" src="{% static 'js/demo/datatables-demo.js' %} "></script>
+{% endblock EndScripts %}
+    
+        
+    

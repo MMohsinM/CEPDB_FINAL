@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+
+{% block PageContent %}
+
+{% if request.user.userprofile.user_type == 3 %}
+    <div>CNIC: {{employee.username}}</div>
+{% endif %}
+    <div>Name: {{employee.first_name}} {{employee.last_name}}</div>
+    <div>Age: {{employee.age}}</div>
+    <div>Salary: {{employee.salary}}</div>
+{% if request.user.id != employee.id and request.user.userprofile.user_type == 3 %}
+    <a data-toggle="modal" data-target="#DeleteModal" 
+    href='/hospital/{{hos_id}}/delete-employee/{{employee.id}}'>Delete</a>
+    <a href='/hospital/{{hos_id}}/edit-employee/{{employee.id}}'>Edit</a>
+{% endif %}
+<div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Delete?</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">Are you Sure you want to delete</div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-primary" href="/hospital/{{hos_id}}/delete-employee/{{employee.id}}">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>       
+
+{% endblock PageContent %}
+    
